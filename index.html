@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Get Paid to Scroll</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px 20px 0;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+            flex: 0 0 auto;
+            margin: auto 0;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 32px;
+            padding: 0 10px;
+        }
+
+        .quiz-app-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .quiz-app-name .dot {
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(135deg, #fe2c55 0%, #00f2ea 100%);
+            border-radius: 50%;
+        }
+
+        .quiz-step-counter {
+            font-size: 14px;
+            color: #888;
+            background: #1a1a1a;
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+
+        .quiz-headline {
+            text-align: center;
+            font-size: clamp(32px, 8vw, 56px);
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: #ffffff;
+            line-height: 1.2;
+            animation: slideUp 0.6s ease-out 0.2s both;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #fe2c55 0%, #00f2ea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .offer-context-compact {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .bonus-box-compact {
+            background: linear-gradient(135deg, rgba(254, 44, 85, 0.15) 0%, rgba(0, 242, 234, 0.15) 100%);
+            border: 1px solid rgba(254, 44, 85, 0.3);
+            border-radius: 12px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bonus-icon-compact {
+            font-size: 20px;
+        }
+
+        .bonus-text-compact {
+            font-size: clamp(14px, 3.5vw, 16px);
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .rating-section-compact {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stars-compact {
+            color: #ffd700;
+            font-size: 16px;
+        }
+
+        .rating-text-compact {
+            font-size: clamp(12px, 3vw, 14px);
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .question {
+            font-size: clamp(28px, 7vw, 48px);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 32px;
+            margin-top: 20px;
+            animation: slideUp 0.8s ease-out 0.2s both;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 32px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .option {
+            border-radius: 16px;
+            padding: 20px 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out both;
+            border: 2px solid;
+        }
+
+        .option:nth-child(1) {
+            animation-delay: 0.2s;
+            background: linear-gradient(135deg, rgba(254, 44, 85, 0.25) 0%, rgba(255, 85, 119, 0.25) 100%);
+            border-color: rgba(254, 44, 85, 0.5);
+        }
+
+        .option:nth-child(2) {
+            animation-delay: 0.3s;
+            background: linear-gradient(135deg, rgba(0, 242, 234, 0.25) 0%, rgba(0, 217, 208, 0.25) 100%);
+            border-color: rgba(0, 242, 234, 0.5);
+        }
+
+        .option:nth-child(1):hover {
+            border-color: rgba(254, 44, 85, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(254, 44, 85, 0.3);
+        }
+
+        .option:nth-child(2):hover {
+            border-color: rgba(0, 242, 234, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 242, 234, 0.3);
+        }
+
+        .option.selected:nth-child(1) {
+            border-color: #fe2c55;
+            background: linear-gradient(135deg, rgba(254, 44, 85, 0.4) 0%, rgba(0, 242, 234, 0.4) 100%);
+            box-shadow: 0 0 25px rgba(254, 44, 85, 0.5);
+        }
+
+        .option.selected:nth-child(2) {
+            border-color: #00f2ea;
+            box-shadow: 0 0 25px rgba(0, 242, 234, 0.5);
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 16px;
+            font-size: clamp(20px, 5vw, 28px);
+            font-weight: 700;
+            color: white;
+        }
+
+        .option-letter {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        .option.selected .option-letter {
+            background: linear-gradient(135deg, #fe2c55 0%, #00f2ea 100%);
+            color: #000;
+        }
+
+        .offer-description {
+            font-size: clamp(13px, 3.5vw, 15px);
+            color: #888;
+            line-height: 1.5;
+            margin-top: 32px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 32px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stat-box {
+            flex: 1;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            padding: 16px 12px;
+            text-align: center;
+        }
+
+        .stat-icon-small {
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .stat-value-small {
+            font-size: clamp(18px, 4vw, 24px);
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .stat-label-small {
+            font-size: 10px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* TikTok Offer Styles */
+        .tiktok-offer {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+            animation: fadeInOffer 0.8s ease-out;
+            flex: 0 0 auto;
+        }
+
+        .tiktok-offer.active {
+            display: block;
+        }
+
+        .tiktok-container {
+            max-width: 800px;
+            width: 100%;
+            padding: 0 10px;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #fe2c55 0%, #00f2ea 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+
+        .progress-fill {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #fe2c55 0%, #00f2ea 100%);
+            border-radius: 10px;
+        }
+
+        .headline {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 0 5px;
+        }
+
+        .headline h1 {
+            font-size: clamp(32px, 8vw, 56px);
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .subheadline {
+            text-align: center;
+            font-size: clamp(14px, 4vw, 18px);
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 10px;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 32px 16px;
+            margin-bottom: 40px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .stat {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .stat:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 64px;
+            background: #2a2a2a;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 10px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stat-icon.users {
+            background: linear-gradient(135deg, #fe2c55 0%, #ff5577 100%);
+        }
+
+        .stat-icon.money {
+            background: linear-gradient(135deg, #00f2ea 0%, #00d9d0 100%);
+        }
+
+        .stat-icon.instant {
+            background: linear-gradient(135deg, #fe2c55 0%, #00f2ea 100%);
+        }
+
+        .stat-value {
+            font-size: clamp(20px, 6vw, 32px);
+            font-weight: 700;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, #fe2c55 0%, #00f2ea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: clamp(9px, 2.5vw, 12px);
+            text-transform: uppercase;
+            color: #888;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-button {
+            display: block;
+            width: fit-content;
+            margin: 0 auto 48px;
+            padding: 20px 48px;
+            font-size: clamp(16px, 4vw, 20px);
+            font-weight: 700;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #fe2c55 0%, #00f2ea 100%);
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(254, 44, 85, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(254, 44, 85, 0.5);
+        }
+
+        .journey-section {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 24px;
+            padding: 40px 32px;
+            margin-top: 40px;
+        }
+
+        .journey-title {
+            text-align: center;
+            font-size: clamp(20px, 5vw, 28px);
+            font-weight: 700;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #fe2c55 0%, #00f2ea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .journey-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .journey-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fe2c55 0%, #00f2ea 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: clamp(16px, 4vw, 20px);
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .step-description {
+            font-size: clamp(13px, 3.5vw, 15px);
+            color: #888;
+            line-height: 1.5;
+        }
+
+        /* Apple Pay Offer Styles */
+        .cash-offer {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+            animation: fadeInOffer 0.8s ease-out;
+            flex: 0 0 auto;
+        }
+
+        .cash-offer.active {
+            display: block;
+        }
+
+        .ap-container {
+            max-width: 800px;
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        .ap-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .ap-step-complete {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .ap-step-complete .dot {
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(135deg, #fe2c55 0%, #00f2ea 100%);
+            border-radius: 50%;
+        }
+
+        .ap-step-counter {
+            font-size: 14px;
+            color: #888;
+            background: #1a1a1a;
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+
+        .ap-headline {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .ap-headline h1 {
+            font-size: clamp(36px, 10vw, 52px);
+            font-weight: 800;
+            line-height: 1.15;
+            color: #ffffff;
+        }
+
+        .ap-highlight {
+            display: inline-block;
+            background: linear-gradient(135deg, #fe2c55 0%, #00f2ea 100%);
+            color: #000000;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-style: italic;
+            font-weight: 800;
+        }
+
+        .ap-subheadline {
+            text-align: center;
+            font-size: clamp(13px, 4vw, 16px);
+            color: #9ca3af;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .ap-cta-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto 48px;
+            padding: 20px 40px;
+            font-size: clamp(16px, 4.5vw, 18px);
+            font-weight: 700;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #fe2c55 0%, #00f2ea 100%);
+            color: #000;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(254, 44, 85, 0.3);
+        }
+
+        .ap-cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(254, 44, 85, 0.5);
+        }
+
+        .ap-cta-button .arrow {
+            font-size: 20px;
+        }
+
+        .ap-journey-section {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 24px;
+            padding: 40px 32px;
+            margin-top: 40px;
+        }
+
+        .ap-journey-title {
+            font-size: clamp(20px, 5vw, 28px);
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-align: center;
+            background: linear-gradient(135deg, #fe2c55 0%, #00f2ea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .ap-journey-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .ap-journey-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            position: relative;
+        }
+
+        .ap-step-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .ap-step-circle {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            border: 2px solid rgba(254, 44, 85, 0.5);
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #888;
+        }
+
+        .ap-step-circle.completed {
+            background: linear-gradient(135deg, #fe2c55 0%, #00f2ea 100%);
+            border-color: transparent;
+        }
+
+        .ap-step-circle.completed svg {
+            width: 18px;
+            height: 18px;
+            stroke: #000;
+            stroke-width: 3;
+        }
+
+        .ap-step-line {
+            width: 2px;
+            height: 40px;
+            background: #2a2a2a;
+            margin-top: 4px;
+        }
+
+        .ap-step-content {
+            flex: 1;
+            padding-top: 4px;
+        }
+
+        .ap-step-title {
+            font-size: clamp(15px, 4vw, 17px);
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #ffffff;
+        }
+
+        .ap-step-title .important {
+            color: #fe2c55;
+        }
+
+        .ap-step-description {
+            font-size: clamp(13px, 3.5vw, 14px);
+            color: #888;
+            line-height: 1.4;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: rgba(0, 0, 0, 0.95);
+            border-top: 1px solid #2a2a2a;
+            padding: 16px 20px;
+            text-align: center;
+            margin-top: 64px;
+            width: 100%;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #00f2ea;
+        }
+
+        .footer-links .separator {
+            color: #2a2a2a;
+        }
+
+        .footer-company {
+            font-size: 11px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .footer-disclaimer {
+            font-size: 10px;
+            color: #555;
+            margin-top: 4px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInOffer {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            body {
+                padding: 20px 15px 0;
+            }
+
+            .quiz-container {
+                padding: 10px 5px;
+            }
+
+            .quiz-header {
+                padding: 0 5px;
+                margin-bottom: 20px;
+            }
+
+            .question {
+                margin-bottom: 24px;
+                margin-top: 16px;
+            }
+
+            .options {
+                gap: 10px;
+                margin-bottom: 24px;
+            }
+
+            .option {
+                padding: 18px 20px;
+            }
+
+            .option-label {
+                gap: 12px;
+            }
+
+            .offer-description {
+                margin-top: 24px;
+                padding: 0 10px;
+            }
+
+            .stats-row {
+                gap: 10px;
+                margin-top: 24px;
+                padding: 0 10px;
+            }
+
+            .stat-box {
+                padding: 14px 10px;
+            }
+
+            .tiktok-container {
+                padding: 0 5px;
+            }
+
+            .logo-container {
+                margin-bottom: 20px;
+            }
+
+            .progress-bar {
+                margin-bottom: 20px;
+            }
+
+            .headline {
+                margin-bottom: 15px;
+            }
+
+            .subheadline {
+                margin-bottom: 30px;
+            }
+
+            .stats-container {
+                padding: 20px 10px;
+                margin-bottom: 30px;
+            }
+
+            .stat {
+                padding: 0 5px;
+            }
+
+            .cta-button {
+                margin-bottom: 35px;
+                padding: 16px 40px;
+            }
+
+            .journey-section {
+                padding: 30px 20px;
+            }
+
+            .journey-step {
+                gap: 15px;
+            }
+
+            .ap-container {
+                padding: 0 15px;
+            }
+
+            .ap-header {
+                margin-bottom: 30px;
+            }
+
+            .ap-headline {
+                margin-bottom: 16px;
+            }
+
+            .ap-subheadline {
+                margin-bottom: 30px;
+            }
+
+            .ap-cta-button {
+                margin-bottom: 40px;
+                padding: 18px 30px;
+            }
+
+            .ap-journey-section {
+                padding: 30px 20px;
+            }
+
+            .ap-journey-steps {
+                gap: 20px;
+            }
+
+            .footer {
+                padding: 12px 15px;
+                margin-top: 40px;
+            }
+
+            .footer-links {
+                gap: 10px;
+            }
+
+            .footer-links a {
+                font-size: 11px;
+            }
+
+            .footer-company {
+                font-size: 10px;
+            }
+
+            .footer-disclaimer {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- QUIZ PAGE -->
+    <div class="quiz-container" id="quizContainer">
+        <div class="quiz-header">
+            <div class="quiz-app-name">
+                <span class="dot"></span>
+                <span>FREECASH APP</span>
+            </div>
+            <div class="quiz-step-counter">1 / 1</div>
+        </div>
+
+        <div class="offer-context">
+            <h2 class="quiz-headline">Get Paid to <span class="gradient-text">Scroll</span>!</h2>
+
+            <div class="offer-context-compact">
+                <div class="bonus-box-compact">
+                    <span class="bonus-icon-compact">🎁</span>
+                    <span class="bonus-text-compact">$5 Sign up Bonus</span>
+                </div>
+                <div class="rating-section-compact">
+                    <div class="stars-compact">★★★★★</div>
+                    <div class="rating-text-compact">4.6</div>
+                </div>
+            </div>
+        </div>
+
+        <h1 class="question">How old <span class="gradient-text">are you?</span></h1>
+
+        <div class="options">
+            <div class="option" data-value="21+">
+                <div class="option-label">
+                    <span class="option-letter">A</span>
+                    <span>21+</span>
+                </div>
+            </div>
+
+            <div class="option" data-value="18-20">
+                <div class="option-label">
+                    <span class="option-letter">B</span>
+                    <span>18-20</span>
+                </div>
+            </div>
+        </div>
+
+        <p class="offer-description">Earn cash just by engaging with our daily offers, that you can do any time!</p>
+
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="stat-icon-small">👥</div>
+                <div class="stat-value-small">500K+</div>
+                <div class="stat-label-small">Active Users</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-icon-small">💵</div>
+                <div class="stat-value-small">100+</div>
+                <div class="stat-label-small">Offers</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TIKTOK SCROLL OFFER (21+) -->
+    <div class="tiktok-offer" id="tiktokOffer">
+        <div class="tiktok-container">
+            <div class="logo-container">
+                <div class="logo-icon">📱</div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+
+            <div class="headline">
+                <h1>Congrats! You <span class="gradient-text">Qualify</span><br>Get Paid to <span class="gradient-text">Scroll!</span></h1>
+            </div>
+
+            <p class="subheadline">
+                Earn up to $500 per offer by testing apps, playing games, & completing surveys. Sign up to start now!
+            </p>
+
+            <div class="stats-container">
+                <div class="stat">
+                    <div class="stat-icon users">👥</div>
+                    <div class="stat-value">500K+</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-icon money">💵</div>
+                    <div class="stat-value">$500</div>
+                    <div class="stat-label">Per Day</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-icon instant">⚡</div>
+                    <div class="stat-value">Instant</div>
+                    <div class="stat-label">Payments</div>
+                </div>
+            </div>
+
+            <a href="https://x.tokrwd.com/click/2" class="cta-button">Click Here to Sign Up</a>
+
+            <div class="journey-section">
+                <h2 class="journey-title">How to Get Started</h2>
+
+                <div class="journey-steps">
+                    <div class="journey-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="step-title">Click Below & Sign Up</div>
+                            <div class="step-description">Click the button above to sign up and get instant access to start earning. It only takes 2 minutes to get started!</div>
+                        </div>
+                    </div>
+
+                    <div class="journey-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <div class="step-title">Complete Tasks & Games to Level Up</div>
+                            <div class="step-description">Play fun games and complete simple tasks to level up your account and unlock higher earning potential!</div>
+                        </div>
+                    </div>
+
+                    <div class="journey-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <div class="step-title">Get Paid to Scroll</div>
+                            <div class="step-description">Simply scroll through content you already love and watch your earnings grow. Make $500 a day from home!</div>
+                        </div>
+                    </div>
+
+                    <div class="journey-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <div class="step-title">Instant Payments</div>
+                            <div class="step-description">Withdraw your earnings instantly via PayPal, crypto, gift cards, and more payment options.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- APPLE PAY OFFER (18-20) -->
+    <div class="cash-offer" id="cashOffer">
+        <div class="ap-container">
+            <div class="ap-header">
+                <div class="ap-step-complete">
+                    <span class="dot"></span>
+                    <span>STEP COMPLETE</span>
+                </div>
+                <div class="ap-step-counter">1 / 1</div>
+            </div>
+
+            <div class="ap-headline">
+                <h1>Get $750 Towards<br><span class="ap-highlight">Apple Pay</span></h1>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+
+            <p class="ap-subheadline">
+                Your device is confirmed compatible. We have reserved your $750 Apple Pay reward for you.
+            </p>
+
+            <a href="https://x.tokrwd.com/click/1" class="ap-cta-button">
+                CLAIM YOUR $750 REWARD
+                <span class="arrow">→</span>
+            </a>
+
+            <div class="ap-journey-section">
+                <h2 class="ap-journey-title">How to Get Started</h2>
+
+                <div class="ap-journey-steps">
+                    <div class="ap-journey-step">
+                        <div class="ap-step-indicator">
+                            <div class="ap-step-circle completed">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path>
+                                </svg>
+                            </div>
+                            <div class="ap-step-line"></div>
+                        </div>
+                        <div class="ap-step-content">
+                            <div class="ap-step-title">Device Verified</div>
+                            <div class="ap-step-description">iPhone/Android Ready</div>
+                        </div>
+                    </div>
+
+                    <div class="ap-journey-step">
+                        <div class="ap-step-indicator">
+                            <div class="ap-step-circle">2</div>
+                            <div class="ap-step-line"></div>
+                        </div>
+                        <div class="ap-step-content">
+                            <div class="ap-step-title">Complete Registration</div>
+                            <div class="ap-step-description">Takes less than 60 seconds</div>
+                        </div>
+                    </div>
+
+                    <div class="ap-journey-step">
+                        <div class="ap-step-indicator">
+                            <div class="ap-step-circle">3</div>
+                            <div class="ap-step-line"></div>
+                        </div>
+                        <div class="ap-step-content">
+                            <div class="ap-step-title">Complete 2-3 deals <span class="important">*important*</span></div>
+                            <div class="ap-step-description">Complete a few quick deals to unlock your reward</div>
+                        </div>
+                    </div>
+
+                    <div class="ap-journey-step">
+                        <div class="ap-step-indicator">
+                            <div class="ap-step-circle">4</div>
+                        </div>
+                        <div class="ap-step-content">
+                            <div class="ap-step-title">Claim $750 Apple Pay Reward</div>
+                            <div class="ap-step-description">Instant credit to your balance</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-links">
+            <a href="#">Terms of Service</a>
+            <span class="separator">•</span>
+            <a href="#">Privacy Policy</a>
+            <span class="separator">•</span>
+            <a href="#">SMS Terms</a>
+            <span class="separator">•</span>
+            <a href="#">Disclaimer</a>
+        </div>
+        <div class="footer-company">
+            © 2025 Conchis Compliance Administration LLC. All rights reserved.
+        </div>
+        <div class="footer-disclaimer">
+            This site is not affiliated with, endorsed by, or sponsored by TikTok Inc. Results may vary. Earnings are not guaranteed.
+        </div>
+    </div>
+
+    <script>
+        const options = document.querySelectorAll('.option');
+        const quizContainer = document.getElementById('quizContainer');
+        const tiktokOffer = document.getElementById('tiktokOffer');
+        const cashOffer = document.getElementById('cashOffer');
+
+        let selectedAge = null;
+
+        options.forEach(option => {
+            option.addEventListener('click', () => {
+                option.classList.add('selected');
+                selectedAge = option.dataset.value;
+
+                setTimeout(() => {
+                    quizContainer.style.display = 'none';
+
+                    if (selectedAge === '21+') {
+                        tiktokOffer.classList.add('active');
+                    } else if (selectedAge === '18-20') {
+                        cashOffer.classList.add('active');
+                    }
+
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 300);
+            });
+        });
+    </script>
+</body>
+</html>
